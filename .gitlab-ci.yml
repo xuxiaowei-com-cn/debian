@@ -10,11 +10,14 @@ build:
     - docker info
     - docker images
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - echo $CI_REGISTRY_IMAGE
     - echo $CI_PIPELINE_ID
     - docker build -t $CI_REGISTRY_IMAGE/debian:latest . --no-cache --progress plain
     - docker tag $CI_REGISTRY_IMAGE/debian:latest $CI_REGISTRY_IMAGE/debian:latest-$CI_PIPELINE_ID
+    - docker tag $CI_REGISTRY_IMAGE/debian:latest $DOCKER_USERNAME/debian:latest
     - docker images
     - docker push $CI_REGISTRY_IMAGE/debian:latest
     - docker push $CI_REGISTRY_IMAGE/debian:latest-$CI_PIPELINE_ID
+    - docker push $DOCKER_USERNAME/debian:latest
