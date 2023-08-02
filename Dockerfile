@@ -7,11 +7,19 @@ LABEL maintainer="徐晓伟<xuxiaowei@xuxiaowei.com.cn>" \
 
 # 安装依赖时，增加 --no-install-recommends 参数，不自动安装推荐的依赖
 
-RUN cat /etc/apt/sources.list \
+RUN if [ -f /etc/apt/sources.list ]; then \
+      cat /etc/apt/sources.list; \
+    fi \
     && apt-get update \
-    && apt-get -y install ca-certificates \
-    && sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list \
-    && sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list \
+    && apt-get -y install ca-certificates; \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list \
+        && sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list; \
+    else \
+      echo "deb https://mirrors.aliyun.com/debian bullseye main" > /etc/apt/sources.list \
+        && echo "deb https://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list \
+        && echo "deb https://mirrors.aliyun.com/debian bullseye-updates main" >> /etc/apt/sources.list; \
+    fi \
     && cat /etc/apt/sources.list \
     && apt-get update \
     && apt-get clean
