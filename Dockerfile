@@ -17,7 +17,7 @@ RUN if [ -f /etc/apt/sources.list ]; then \
         && sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list; \
     else \
       echo "deb https://mirrors.aliyun.com/debian bullseye main" > /etc/apt/sources.list \
-        && echo "deb https://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list \
+        && echo "deb https://mirrors.aliyun.com/debian-security bullseye-security main" >> /etc/apt/sources.list \
         && echo "deb https://mirrors.aliyun.com/debian bullseye-updates main" >> /etc/apt/sources.list; \
     fi \
     && cat /etc/apt/sources.list \
